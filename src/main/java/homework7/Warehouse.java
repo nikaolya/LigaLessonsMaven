@@ -189,6 +189,6 @@ public class Warehouse {
         workbook.write(outFile);
         outFile.close();
 
-        System.out.println("The list of the items stored in the warehouse is imported.");
+        System.out.println("The list of the items stored in the warehouse is exported.");
     }
 }
