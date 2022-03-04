@@ -1,5 +1,7 @@
 package homework7;
 
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -161,10 +163,18 @@ public class Warehouse {
     public void exportStoredItems() throws IOException {
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Sheet1");
+        // Заголовок
         XSSFRow row = sheet.createRow(0);
+
+        CellStyle style=workbook.createCellStyle();
+        XSSFFont font= workbook.createFont();
+        font.setBold(true);
+        style.setFont(font);
+
         row.createCell(0).setCellValue("Item");
         row.createCell(1).setCellValue("Amount");
-        row.setHeightInPoints(30);
+        row.getCell(0).setCellStyle(style);
+        row.getCell(1).setCellStyle(style);
 
         int index = 1;
         for(String item: warehouse.keySet()) {
