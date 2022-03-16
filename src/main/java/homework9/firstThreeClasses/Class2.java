@@ -1,16 +1,20 @@
-package homework9;
+package homework9.firstThreeClasses;
 
-import org.testng.annotations.*;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+import org.testng.annotations.DataProvider;
 
 import java.lang.reflect.Method;
 
 public class Class2 {
-    @org.testng.annotations.DataProvider(name = "test-data-1")
+    @DataProvider(name = "test-data-1")
     public Object[][] testData1(){
         return new Object[][] {{"1 2"}};
     }
 
-    @org.testng.annotations.DataProvider(name = "test-data-2")
+    @DataProvider(name = "test-data-2")
     public Object[][] testData2(){
         return new Object[][] {{"three four"}, {"true false"}};
     }

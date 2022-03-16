@@ -2,11 +2,9 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="Running all tests">
     <test name="tests-1">
-        <classes>
-            <class name="homework9.Class1"/>
-            <class name="homework9.Class2"/>
-            <class name="homework9.Class3"/>
-        </classes>
+        <packages>
+            <package name="homework9.firstThreeClasses"></package>
+        </packages>
     </test>
     <test name="tests-2">
         <classes>

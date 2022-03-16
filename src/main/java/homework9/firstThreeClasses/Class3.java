@@ -1,4 +1,4 @@
-package homework9;
+package homework9.firstThreeClasses;
 
 import org.testng.annotations.*;
 

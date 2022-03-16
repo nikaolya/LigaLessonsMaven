@@ -1,14 +1,15 @@
-package homework9;
+package homework9.firstThreeClasses;
 
 import org.testng.annotations.*;
+import org.testng.annotations.DataProvider;
 
 public class Class1 {
-    @org.testng.annotations.DataProvider(name = "test-data-1")
+    @DataProvider(name = "test-data-1")
     public Object[][] testData1(){
-        return new Object[][] {{"1 2"}};
+        return new Object[][] {{1,2}};
     }
 
-    @org.testng.annotations.DataProvider(name = "test-data-2")
+    @DataProvider(name = "test-data-2")
     public Object[][] testData2(){
         return new Object[][] {{"three four"}, {"true false"}};
     }
@@ -30,9 +31,9 @@ public class Class1 {
 
 
     @Test(dataProvider = "test-data-1")
-    public void test_2 (String data) {
+    public void test_2 (int data1, int data2) {
         System.out.println("Test");
-        System.out.println("Test data: " + data);
+        System.out.println("Test data: " + data1 + " " + data2);
     }
 
     @Test
