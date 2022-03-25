@@ -22,15 +22,19 @@ public class ToCheck {
         //System.out.println(productCard.getmBonusValue().getText());
         //productCard.getBonusRubles().hover();
 
-        Pagination pagination = listingPage.getPagination();
-        pagination.scrollRight().shouldBe(Condition.visible).click();
-        ProductCard productCard = listingPage.getProductCard("Стиральная машина узкая Indesit BWSE 61051");
+        //Pagination pagination = listingPage.getPagination();
+        //pagination.scrollRight().shouldBe(Condition.visible).click();
+        //ProductCard productCard = listingPage.getProductCard("Стиральная машина узкая Indesit BWSE 61051");
         //Selenide.sleep(1000);
 
-        System.out.println(scrollDown(productCard.getPriceLabel()).scrollTo().shouldBe(Condition.visible).getText());
+        //System.out.println(scrollDown(productCard.getPriceLabel()).scrollTo().shouldBe(Condition.visible).getText());
         //pagination.scrollLeft().click();
-        pagination.getPaginationButtons()[5].shouldBe(Condition.visible).click();
-        ProductCard productCard2 = listingPage.getProductCard("Стиральная машина узкая Whirlpool FWSD71283WCV RU.1");
+        //pagination.getPaginationButtons()[5].shouldBe(Condition.visible).click();
+
+
+
+
+        ProductCard productCard2 = listingPage.getProductCard("Стиральная машина узкая Bosch WLP24261OE");
         //Selenide.sleep(1000);
         System.out.println(scrollDown(productCard2.getReviews()).scrollTo().shouldBe(Condition.visible).getText());
         //System.out.println(pagination.getCurrentPage().scrollTo().shouldBe(Condition.visible).getText());

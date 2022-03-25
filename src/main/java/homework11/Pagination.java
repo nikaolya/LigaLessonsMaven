@@ -7,19 +7,23 @@ public class Pagination {
 
     private SelenideElement scrollLeft;
     private SelenideElement scrollRight;
-    private SelenideElement[] paginationButtons= new SelenideElement [8];
+    private SelenideElement[] paginationButtons;
     private SelenideElement currentPage;
 
-    private final String XPATH_PAGINATION_CONTAINER = "//div[contains(@class,  'bottom-controls')]";
+    private final String XPATH_PAGINATION_CONTAINER = "//div[contains(@class,  'bottom-controls')]//ul[contains(@class, 'pagination')]";
 
     private Pagination(){
-        scrollRight = Selenide.$x(XPATH_PAGINATION_CONTAINER + "//ul[contains(@class, 'pagination')]/li[last()]/a");
-        scrollLeft = Selenide.$x(XPATH_PAGINATION_CONTAINER + "//ul[contains(@class, 'pagination')]/li[1]/a");
-        for (int i = 1; i < paginationButtons.length; i++) {
-            String path = String.format("//ul[contains(@class, 'pagination')]/li[a[text() = '%d']]", i);
+        scrollRight = Selenide.$x(XPATH_PAGINATION_CONTAINER + "/li[last()]/a");
+        scrollLeft = Selenide.$x(XPATH_PAGINATION_CONTAINER + "/li[1]/a");
+        SelenideElement lastPage = Selenide.$x(XPATH_PAGINATION_CONTAINER + "/li[last()-1]/a");
+        int numberOfPages = Integer.valueOf(lastPage.getText());
+        paginationButtons = new SelenideElement[numberOfPages+1];
+        for (int i = 1; i <= numberOfPages; i++) {
+            String path = String.format("/li[a[text() = '%d']]", i);
             paginationButtons[i] = Selenide.$x(XPATH_PAGINATION_CONTAINER + path);
         }
-        currentPage = Selenide.$x(XPATH_PAGINATION_CONTAINER + "//ul[contains(@class, 'pagination')]/li/span");
+        System.out.println();
+        currentPage = Selenide.$x(XPATH_PAGINATION_CONTAINER + "/li/span");
     }
 
     static Pagination getPagination() {

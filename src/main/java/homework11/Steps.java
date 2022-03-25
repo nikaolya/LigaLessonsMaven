@@ -28,4 +28,13 @@ public class Steps {
         System.out.println(productCard.getTitle().scrollTo().shouldBe(Condition.visible).getText());
     }
 
+    public void setCheckBox(String categoryName, String filterName){
+        ListingViewSwitcher listingViewSwitcher = listingPage.getListingViewSwitcher();
+        listingViewSwitcher.setGridView();
+
+        Filter filter = listingPage.getFilter(categoryName, filterName);
+        filter.getCheckBox().click();
+    }
+
+
 }
