@@ -19,6 +19,7 @@ public class ProductCard {
 
     private final String XPATH_TITLE_LINE_CONTAINER = "//div[contains(@class, 'product-card__title-line-container')]";
     private final String XPATH_NESTED_NAME_LINK = "[mvid-plp-product-title[.//a[text() = ' %s ']]]";
+    private final String XPATH_NESTED_MBONUS = "/following-sibling::div[contains(@class, 'product-card__mbonus-block-container')]";
 
     private ProductCard(String productName) {
         String titleContainerPath = String.format(XPATH_TITLE_LINE_CONTAINER + XPATH_NESTED_NAME_LINK, productName);
@@ -43,11 +44,12 @@ public class ProductCard {
 
         reviews = Selenide.$x(titleContainerPath + "/mvid-plp-product-rating//span[contains(@class, 'product-rating__feedback')]");
 
-        mBonusValue = Selenide.$x(titleContainerPath + "/following-sibling::div[contains(@class, 'product-card__mbonus-block-container')]" + "//span[contains(@class, 'mbonus-block__value')]");
 
-        mBonusIcon = Selenide.$x(titleContainerPath + "/following-sibling::div[contains(@class, 'product-card__mbonus-block-container')]" + "//use");
+        mBonusValue = Selenide.$x(titleContainerPath + XPATH_NESTED_MBONUS + "//span[contains(@class, 'mbonus-block__value')]");
 
-        bonusRubles = Selenide.$x(titleContainerPath + "/following-sibling::div[contains(@class, 'product-card__mbonus-block-container')]" + "//span[contains(@class, 'mbonus-block__text-label')]");
+        mBonusIcon = Selenide.$x(titleContainerPath + XPATH_NESTED_MBONUS + "//use");
+
+        bonusRubles = Selenide.$x(titleContainerPath + XPATH_NESTED_MBONUS + "//span[contains(@class, 'mbonus-block__text-label')]");
 
     }
 

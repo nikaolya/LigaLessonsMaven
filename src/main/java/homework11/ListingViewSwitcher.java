@@ -3,6 +3,7 @@ package homework11;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 
+// Переключатель вида отображения товаров на странице
 public class ListingViewSwitcher {
     private SelenideElement viewSwitcher;
     private SelenideElement viewState;
@@ -23,20 +24,5 @@ public class ListingViewSwitcher {
     public SelenideElement getViewState() {
         return viewState;
     }
-
-    public void setGridView(){
-        String listingType = getViewState().getAttribute("class");
-        if (listingType.contains("listing-view-switcher__pointer--list")){
-            getViewSwitcher().click();
-        }
-    }
-
-    public void setListView(){
-        String listingType = getViewState().getAttribute("class");
-        if (listingType.contains("listing-view-switcher__pointer--grid")){
-            getViewSwitcher().click();
-        }
-    }
-
 
 }

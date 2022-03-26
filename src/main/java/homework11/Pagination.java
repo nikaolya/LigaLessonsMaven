@@ -15,6 +15,8 @@ public class Pagination {
     private Pagination(){
         scrollRight = Selenide.$x(XPATH_PAGINATION_CONTAINER + "/li[last()]/a");
         scrollLeft = Selenide.$x(XPATH_PAGINATION_CONTAINER + "/li[1]/a");
+
+        // Определение количества страниц в разделе и их заполнение
         SelenideElement lastPage = Selenide.$x(XPATH_PAGINATION_CONTAINER + "/li[last()-1]/a");
         int numberOfPages = Integer.valueOf(lastPage.getText());
         paginationButtons = new SelenideElement[numberOfPages+1];
@@ -22,7 +24,7 @@ public class Pagination {
             String path = String.format("/li[a[text() = '%d']]", i);
             paginationButtons[i] = Selenide.$x(XPATH_PAGINATION_CONTAINER + path);
         }
-        System.out.println();
+        // Определение текущей страницы
         currentPage = Selenide.$x(XPATH_PAGINATION_CONTAINER + "/li/span");
     }
 
