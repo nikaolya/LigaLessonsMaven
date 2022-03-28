@@ -3,10 +3,13 @@ package homework11;
 import com.codeborne.selenide.Selenide;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
 import static homework11.SelenideConfiguration.setSelenideConfiguration;
 
 
 public class Tests {
+
+    //MvideoPage mvideoPage = Selenide.page(new MvideoPage());
 
     @BeforeMethod
     public void beforeMethod(){
@@ -17,10 +20,10 @@ public class Tests {
     // Поиск товара по названию
     @Test
     public void test_1(){
-        Selenide.open("https://www.mvideo.ru/stiralnye-i-sushilnye-mashiny-2427/stiralnye-mashiny-89");
+        Selenide.open("https://www.mvideo.ru/smartfony-i-svyaz-10/smartfony-205?from=no-search-results");
         Steps steps = new Steps();
         steps.setGridView();
-        steps.findElement("Стиральная машина узкая Indesit EWUC 4105 CIS");
+        steps.findElement("Смартфон realme 8i 4+64GB Space Black (RMX3151)");
     }
 
     // Установка check box
@@ -49,5 +52,11 @@ public class Tests {
         steps.setGridView();
         steps.setToggleButton("Bluetooth");
     }
+
+/*    // Чтобы после каждого теста закрывался браузер
+    @AfterMethod
+    public void afterMethod(){
+        WebDriverRunner.closeWebDriver();
+    }*/
 
 }
