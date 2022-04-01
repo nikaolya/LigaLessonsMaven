@@ -1,9 +1,10 @@
-package final_task;
+package final_task.page_object;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
+import final_task.enums.ViewStyle;
 
 public class StartPage {
     private static StartPage startPage;

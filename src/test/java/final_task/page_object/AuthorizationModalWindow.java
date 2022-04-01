@@ -1,8 +1,9 @@
-package final_task;
+package final_task.page_object;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import final_task.enums.ElementStatus;
 
 public class AuthorizationModalWindow {
 

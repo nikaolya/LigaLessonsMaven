@@ -1,8 +1,9 @@
-package final_task;
+package final_task.page_object;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import final_task.enums.ElementStatus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +51,7 @@ public class PageHeader {
         return element.getAttribute("class");
     }
 
-    public int getNumberOfProductsInCart(){
+    public int getNumberOfProductsInCartFromBubble(){
         SelenideElement cartBubble = Selenide.$x(XPATH_NAVIGATION_TABS + "/div[contains(@class, 'tab-cart')]/mvid-header-icon" + "//mvid-bubble");
         int numberOfProducts = 0;
         if (cartBubble.exists()){
@@ -79,16 +80,26 @@ public class PageHeader {
     }
 
     public void pressCompareButton(){
-        SelenideElement cartTab = Selenide.$x(XPATH_NAVIGATION_TABS + "/div[contains(@class, 'tab-compare')]/mvid-header-icon" + "//a[contains(@title, 'Сравнение')]");
+        SelenideElement cartTab = Selenide.$x(XPATH_NAVIGATION_TABS +
+                "/div[contains(@class, 'tab-compare')]/mvid-header-icon" + "//a[contains(@title, 'Сравнение')]");
         cartTab.should(Condition.exist);
         Selenide.sleep(2000);
         cartTab.click();
     }
 
     public void pressLogInButton(){
-        SelenideElement logInTab = Selenide.$x(XPATH_NAVIGATION_TABS + "/div[contains(@class, 'tab-profile')]/mvid-header-icon" + "//a[contains(@title, 'Личный кабинет')]");
+        SelenideElement logInTab = Selenide.$x(XPATH_NAVIGATION_TABS +
+                "/div[contains(@class, 'tab-profile')]/mvid-header-icon" + "//a[contains(@title, 'Личный кабинет')]");
         logInTab.should(Condition.exist);
         logInTab.click();
+    }
+
+
+    public void pressWishlistButton(){
+        SelenideElement wishlistTab = Selenide.$x(XPATH_NAVIGATION_TABS +
+                "/div[contains(@class, 'tab-personal')]/mvid-header-icon" + "//a[contains(@title, 'Избранное')]");
+        wishlistTab.should(Condition.exist);
+        wishlistTab.click();
     }
 
 

@@ -1,8 +1,11 @@
-package final_task;
+package final_task.page_object;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CartPage {
     private final String XPATH_CART_TITLE = "//span[contains(@class, 'c-header-checkout__logo')]";
@@ -34,6 +37,17 @@ public class CartPage {
         addedToCartProductTitle = Selenide.$x(String.format(XPATH_ADDED_PRODUCT_TITLE, indexNumber)+ XPATH_NESTED_PRODUCT_TITLE);
         addedToCartProductTitle.should(Condition.exist);
         return addedToCartProductTitle.getText();
+    }
+
+    public List<String> collectAllProductsInCartTitles(){
+        int count = Integer.valueOf(getNumberOfProductsInCart().replaceAll("[\\D]", ""));
+        List<String> actualTitles = new ArrayList<>();
+        for (int i = 1; i <= count; i++) {
+            addedToCartProductTitle = Selenide.$x(String.format(XPATH_ADDED_PRODUCT_TITLE, i)+ XPATH_NESTED_PRODUCT_TITLE);
+            addedToCartProductTitle.should(Condition.exist);
+            actualTitles.add(addedToCartProductTitle.getText());
+        }
+        return actualTitles;
     }
 
     public String getTotalPrice(){

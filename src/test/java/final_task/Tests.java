@@ -2,9 +2,17 @@ package final_task;
 
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
+import final_task.enums.Button;
+import final_task.enums.ElementStatus;
+import final_task.enums.Parameter;
+import final_task.enums.Section;
+import final_task.steps.Steps;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static final_task.SelenideConfiguration.setSelenideConfiguration;
 
@@ -39,7 +47,7 @@ public class Tests {
         steps.checkDayProductTitle("Товары дня");
         steps.clickAddToCartButton();
         steps.checkIfTabHasCorrectStatus("Корзина", ElementStatus.ACTIVE);
-        steps.getNumberOfProductsInCart(1);
+        steps.getNumberOfProductsInCartFromBubble(1);
 
         steps.softAssert.assertAll("Some tests failed");
     }
@@ -50,15 +58,18 @@ public class Tests {
         Steps steps = new Steps();
 
         steps.checkDayProductTitle("Товары дня");
-        String addedProductTitle = steps.saveProductParameter(Section.DAYPRODUCT, Parameter.TITLE);
-        String addedProductPrice = steps.saveProductParameter(Section.DAYPRODUCT, Parameter.PRICE);
+
+        List<String> addedProductsTitles = new ArrayList<>();
+        List<String> addedProductsPrices = new ArrayList<>();
+        addedProductsTitles.add(steps.saveProductParameter(Section.DAYPRODUCT, Parameter.TITLE));
+        addedProductsPrices.add(steps.saveProductParameter(Section.DAYPRODUCT, Parameter.PRICE));
         steps.clickAddToCartButton();
         steps.pressCartButton("/cart");
         steps.checkCartPageTitle("Моя корзина");
-        steps.checkProductInCartTitle(addedProductTitle, 1);
+        steps.checkProductsTitlesInCart(addedProductsTitles);
         steps.checkThatCheckoutButtonIsDisplayed("Перейти к оформлению");
-        steps.checkTotalPrice(addedProductPrice);
         steps.checkNumberOfProductsInCart("В корзине 1 товар");
+        steps.checkTotalPrice(addedProductsPrices);
 
         steps.softAssert.assertAll("Some tests failed");
     }
@@ -69,18 +80,18 @@ public class Tests {
         Steps steps = new Steps();
 
         steps.checkThatMostlySeenIsDisplayed();
-        String addedProductTitle1 = steps.saveProductParameter(Section.MOSTLYSEEN, Parameter.TITLE, 1);
-        String addedProductPrice1 = steps.saveProductParameter(Section.MOSTLYSEEN, Parameter.PRICE, 1);
-        steps.addToCartFromMostlySeen(1);
-        String addedProductTitle2 = steps.saveProductParameter(Section.MOSTLYSEEN, Parameter.TITLE, 2);
-        String addedProductPrice2 = steps.saveProductParameter(Section.MOSTLYSEEN, Parameter.PRICE, 2);
-        steps.addToCartFromMostlySeen(2);
+        List<String> addedProductsTitles = new ArrayList<>();
+        List<String> addedProductsPrices = new ArrayList<>();
+        for (int index = 1; index <= 2; index++) {
+            addedProductsTitles.add(steps.saveProductParameter(Section.MOSTLYSEEN, Parameter.TITLE, index));
+            addedProductsPrices.add(steps.saveProductParameter(Section.MOSTLYSEEN, Parameter.PRICE, index));
+            steps.addToCartFromMostlySeen(index);
+        }
+
         steps.pressCartButton("/cart");
+        steps.checkProductsTitlesInCart(addedProductsTitles);
         steps.checkNumberOfProductsInCart("В корзине 2 товара");
-        steps.checkProductInCartTitle(addedProductTitle1, 1);
-        steps.checkProductInCartTitle(addedProductTitle2, 2);
-        String addedProductsPrice = Integer.toString(Integer.valueOf(addedProductPrice1)+Integer.valueOf(addedProductPrice2));
-        steps.checkTotalPrice(addedProductsPrice);
+        steps.checkTotalPrice(addedProductsPrices);
 
         steps.softAssert.assertAll("Some tests failed");
     }
@@ -104,7 +115,7 @@ public class Tests {
 
         steps.checkThatInputFieldIdDisplayed();
         steps.searchText("apple", "/product-list-page");
-        //steps.checkProductsTitlesOnPage("apple", "");
+        steps.checkProductsTitlesOnPage("apple", "");
         steps.checkThatSortDropdownIsDisplayed("Сначала популярные");
         steps.setSortingType("Сначала дороже");
         steps.checkThatSortDropdownIsDisplayed("Сначала дороже");
@@ -137,14 +148,43 @@ public class Tests {
         steps.checkThatInputFieldIdDisplayed();
         steps.searchText("apple", "/product-list-page");
 
-        String addedProductTitle = steps.saveProductParameter(Section.LISTINGPAGE, Parameter.TITLE, 1,1);
-        steps.pressButton(Button.COMPARE,1,1);
-        String addedProductTitle2 = steps.saveProductParameter(Section.LISTINGPAGE, Parameter.TITLE, 1,2);
-        steps.pressButton(Button.COMPARE,1,2);
-        String addedProductTitle3 = steps.saveProductParameter(Section.LISTINGPAGE, Parameter.TITLE, 1,3);
-        steps.pressButton(Button.COMPARE,1,3);
+        List<String> addedProductsTitles = new ArrayList<>();
+        for (int index = 1; index <= 3; index++) {
+            addedProductsTitles.add(steps.saveProductParameter(Section.LISTINGPAGE, Parameter.TITLE, 1,index));
+            steps.pressButton(Button.COMPARE,1,index);
+        }
         steps.checkIfTabHasCorrectStatus("Сравнение",ElementStatus.ACTIVE);
         steps.pressCompareButton("/product-comparison");
+        steps.checkComparePageTitle("Сравнение товаров");
+        steps.checkProductsTitlesInComparedPage(addedProductsTitles);
+
+        steps.softAssert.assertAll("Some tests failed");
+    }
+
+    @Test(testName = "9.\tПроверка добавления товара в список избранного")
+    public void text_9(){
+        Selenide.open("https://www.mvideo.ru");
+        Steps steps = new Steps();
+        steps.checkThatInputFieldIdDisplayed();
+        steps.searchText("apple", "/product-list-page");
+
+        List<String> addedProductsTitles = new ArrayList<>();
+        for (int index = 1; index <= 3; index++) {
+            addedProductsTitles.add(steps.saveProductParameter(Section.LISTINGPAGE, Parameter.TITLE, 1,index));
+            steps.pressButton(Button.WISHLIST,1,index);
+        }
+        steps.checkIfTabHasCorrectStatus("Избранное",ElementStatus.ACTIVE);
+        steps.pressWishlistButton("/wish-list");
+        steps.checkWishlistPageTitle("Избранное");
+        steps.checkProductsTitlesInWishlistPage(addedProductsTitles);
+
+        steps.softAssert.assertAll("Some tests failed");
+    }
+
+    @Test(testName = "10.\tПроверка изменения города")
+    public void text_10(){
+        Selenide.open("https://www.mvideo.ru");
+        Steps steps = new Steps();
 
         // НЕ ДОДЕЛАНО
 

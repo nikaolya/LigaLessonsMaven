@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Running all cases">
+    <test name="tests">
+        <classes>
+            <class name="final_task.Tests"/>
+        </classes>
+    </test>
+</suite>

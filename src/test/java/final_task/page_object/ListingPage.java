@@ -1,8 +1,9 @@
-package final_task;
+package final_task.page_object;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import final_task.enums.Button;
 
 public class ListingPage {
 
@@ -25,6 +26,9 @@ public class ListingPage {
     private final String XPATH_NESTED_ADD_TO_CART_BUTTON = "//mvid-plp-cart-button//button";
     private final String XPATH_NESTED_FAVORITES_TAB = "//div[contains(@class, 'wishlist-button-block')]//button";
     private final String XPATH_NESTED_COMPARE_TAB = "//div[contains(@class, 'compare-button-block')]//button";
+
+    private final String XPATH_NESTED_PRODUCT_NOTIFICATION = "//div[contains(@class, 'product-card__notification-container')][%d]";
+    private final String XPATH_NESTED_NOTIFICATION_TEXT = "//div[contains(@class, 'product-notification')]";
 
     private SelenideElement sortDropdown;
     private SelenideElement sortState;
@@ -61,6 +65,7 @@ public class ListingPage {
         while(true){
             while (true){
                 // Начинаем с первого товара на странице и мотаем до последнего элемента на странице
+                // Товары на странице перебираются по индексам [номер строки, порядковый номер в строке]
                 currentProductTitle = getProductTitle(indexRow, indexInLine);
 
                 // при встрече первого товара, не удовлетворяющего условию проверки, возвращаем false
@@ -68,11 +73,36 @@ public class ListingPage {
                     return false;
                 }
 
-                if (expectedSorting.equals("Сначала дороже")){
+/*                if (expectedSorting.equals("Сначала дороже")){
                     currentProductPrice = getProductPrice(indexRow,indexInLine);
                     if (currentProductPrice > previousProductPrice){
                         return false;
                     }
+                    if (currentProductPrice!=0) {
+                        previousProductPrice = currentProductPrice;
+                    }
+                }*/
+
+                if (expectedSorting.equals("Сначала дороже")){
+                    currentProductPrice = getProductPrice(indexRow,indexInLine);
+
+                    // при встрече первого товара, не удовлетворяющего условию проверки, возвращаем false
+                    if (currentProductPrice > previousProductPrice){
+                        // но сначала перепроверяем, не случайно ли так вышло и на самом деле товара нет в наличии
+                        if (!notificationNoProductIsDisplayed(indexRow,indexInLine)) {
+                            return false;
+                        }
+                    }
+
+                    // если товара нет в наличии, сначала перепроверяем не случайно ли так получилось, а то возможно, на самом деле товар есть
+                    if (currentProductPrice == 0){
+                        // если уведомления, что товара нет в наличии не отображается, это была ошибка, и мы заново определяем цену
+                        if (!notificationNoProductIsDisplayed(indexRow,indexInLine)) {
+                            currentProductPrice = getProductPrice(indexRow,indexInLine);
+                        }
+                    }
+
+                    // перед переходом к следующему товару, цена текущего становится предыдущим значением, если товар в наличии и цена у него существует
                     if (currentProductPrice!=0) {
                         previousProductPrice = currentProductPrice;
                     }
@@ -112,9 +142,9 @@ public class ListingPage {
         String priceXpath = String.format(XPATH_PRODUCT+XPATH_NESTED_PRICE_CONTAINER, indexRow, indexInLine);
         SelenideElement priceContainer = Selenide.$x(priceXpath);
         priceContainer.should(Condition.exist);
-        if (indexRow==1){
+/*        if (indexRow==1){
             Selenide.sleep(500);
-        }
+        }*/
         if(!(priceContainer.getAttribute("class").contains("product-card__price-block-container--not-first-placed"))){
             SelenideElement productPrice = Selenide.$x(priceXpath+XPATH_NESTED_PRICE);
             productPrice.should(Condition.exist);
@@ -132,6 +162,18 @@ public class ListingPage {
         productTitle.scrollIntoView("{behavior: \"smooth\", block: \"center\", inline: \"center\"}");
         productTitle.should(Condition.exist);
         return productTitle.getText();
+    }
+
+    public boolean notificationNoProductIsDisplayed(int indexRow, int indexInLine){
+        String notificationContainerXpath = String.format(XPATH_PRODUCT+XPATH_NESTED_PRODUCT_NOTIFICATION, indexRow, indexInLine);
+        String notificationTextXpath = notificationContainerXpath + XPATH_NESTED_NOTIFICATION_TEXT;
+        SelenideElement notification = Selenide.$x(notificationContainerXpath);
+        SelenideElement text = Selenide.$x(notificationTextXpath);
+        if (notification.getAttribute("class").contains("product-card__notification-container--first-placed") &&
+        text.getText().equals("Нет в наличии")){
+            return true;
+        }
+        return false;
     }
 
     public void pressButton(Button buttonToPress, int indexRow, int indexInLine){
