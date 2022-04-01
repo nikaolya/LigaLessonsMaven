@@ -2,5 +2,7 @@ package final_task;
 
 public enum ElementStatus {
     ACTIVE,
-    DISABLED
+    DISABLED,
+    DISPLAYED,
+    HIDDEN
 }

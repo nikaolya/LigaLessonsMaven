@@ -4,7 +4,8 @@ import com.codeborne.selenide.Configuration;
 
 public class SelenideConfiguration {
     public static void setSelenideConfiguration(){
-        Configuration.pageLoadTimeout = 60000;
+        //Configuration.pageLoadTimeout = 60000;
+        Configuration.pageLoadStrategy = "eager";
         Configuration.browser = "chrome";
         Configuration.browserSize = "1920x1080";
         Configuration.browserPosition = "0x0";
