@@ -5,6 +5,7 @@ import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import final_task.enums.ElementStatus;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +15,9 @@ public class PageHeader {
     private final String XPATH_INPUT_CONTAINER = "//div[contains(@class, 'search-container')]";
     private final String XPATH_NESTED_INPUT_FIELD = "/form//div[contains(@class, 'input__container')]";
 
+    private final String XPATH_TOP_HEADER = "//div[contains(@class, 'app-header-top')]";
+    private final String XPATH_NESTED_LOCATION_TAB = "//div[contains(@class, 'location')]";
+    private final String XPATH_NESTED_CURRENT_CITY = "//span[contains(@class, 'location-text')]";
 
     private Map<String, SelenideElement> navigationTabs= new HashMap<>();
 
@@ -24,6 +28,8 @@ public class PageHeader {
     private SelenideElement cartTab;
     private SelenideElement inputTextField;
     private SelenideElement searchButton;
+    private SelenideElement currentCity;
+    private SelenideElement locationTab;
 
 
     public PageHeader() {
@@ -41,6 +47,9 @@ public class PageHeader {
 
         inputTextField = Selenide.$x(XPATH_INPUT_CONTAINER+XPATH_NESTED_INPUT_FIELD+ "/input");
         searchButton = Selenide.$x(XPATH_INPUT_CONTAINER+XPATH_NESTED_INPUT_FIELD+"//div[contains(@class, 'search-icon-wrap')]/mvid-icon");
+
+        locationTab = Selenide.$x(XPATH_TOP_HEADER+XPATH_NESTED_LOCATION_TAB);
+        currentCity = Selenide.$x(XPATH_TOP_HEADER+XPATH_NESTED_LOCATION_TAB+XPATH_NESTED_CURRENT_CITY);
     }
 
     static PageHeader getPageHeader() {
@@ -118,4 +127,16 @@ public class PageHeader {
         searchButton.click();
     }
 
+    public void pressLocationTab(){
+        locationTab.should(Condition.exist);
+        locationTab.click();
+    }
+
+    public String checkCurrentCity(String expectedCity){
+        currentCity.shouldHave(Condition.text(expectedCity),Duration.ofSeconds(30));
+        //currentCity.shouldBe(Condition.visible, Duration.ofSeconds(30));
+        return currentCity.getText();
+    }
+
 }
+

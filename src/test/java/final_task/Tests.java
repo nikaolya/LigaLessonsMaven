@@ -142,7 +142,7 @@ public class Tests {
     }
 
     @Test(testName = "8.\tПроверка добавления товаров в список сравнения")
-    public void text_8(){
+    public void test_8(){
         Selenide.open("https://www.mvideo.ru");
         Steps steps = new Steps();
         steps.checkThatInputFieldIdDisplayed();
@@ -162,7 +162,7 @@ public class Tests {
     }
 
     @Test(testName = "9.\tПроверка добавления товара в список избранного")
-    public void text_9(){
+    public void test_9(){
         Selenide.open("https://www.mvideo.ru");
         Steps steps = new Steps();
         steps.checkThatInputFieldIdDisplayed();
@@ -182,11 +182,16 @@ public class Tests {
     }
 
     @Test(testName = "10.\tПроверка изменения города")
-    public void text_10(){
+    public void test_10(){
         Selenide.open("https://www.mvideo.ru");
         Steps steps = new Steps();
-
-        // НЕ ДОДЕЛАНО
+        steps.pressLocationTab();
+        steps.checkIfModalWindowIsDisplayed(true);
+        steps.checkSelectCityModalWindowTitle("Выберите город");
+        steps.setCity("Краснодар");
+        //Selenide.sleep(500);
+        steps.checkCurrentCity("Краснодар");
+        steps.checkIfModalWindowIsDisplayed(false);
 
         steps.softAssert.assertAll("Some tests failed");
     }

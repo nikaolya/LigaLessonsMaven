@@ -6,6 +6,7 @@ import final_task.page_object.*;
 import org.testng.asserts.SoftAssert;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class Steps {
     private StartPage startPage;
@@ -45,6 +46,19 @@ public class Steps {
         PageHeader pageHeader = startPage.getPageHeader();
         pageHeader.pressLogInButton();
         Selenide.sleep(200);
+    }
+
+    // PageHeader
+    public void pressLocationTab(){
+        PageHeader pageHeader = startPage.getPageHeader();
+        pageHeader.pressLocationTab();
+    }
+
+    // PageHeader
+    public void checkCurrentCity(String expectedCity){
+        PageHeader pageHeader = startPage.getPageHeader();
+        String actualCity = pageHeader.checkCurrentCity(expectedCity);
+        softAssert.assertEquals(actualCity,expectedCity,String.format("проверка текущего города: %s",expectedCity));
     }
 
     // ProductOfTheDay
@@ -277,5 +291,30 @@ public class Steps {
         WishlistPage wishlistPage = new WishlistPage();
         List<String> actualTitles = wishlistPage.collectAllWishedProductsTitles();
         softAssert.assertTrue(actualTitles.size() == expectedTitles.size() && actualTitles.containsAll(expectedTitles) && expectedTitles.containsAll(actualTitles), "проверка заголовков товаров на странице избранного");
+    }
+
+    // SelectCityModalWindow
+    public void checkSelectCityModalWindowTitle(String expectedTitle){
+        SelectCityModalWindow selectCityModalWindow = new SelectCityModalWindow();
+        String actualTitle = selectCityModalWindow.getSelectCityModalWindowTitle();
+        softAssert.assertEquals(actualTitle,expectedTitle,String.format("проверка заголовка окна выбора города: %s",expectedTitle));
+    }
+
+    // SelectCityModalWindow
+    public void setCity(String city){
+        SelectCityModalWindow selectCityModalWindow = new SelectCityModalWindow();
+        selectCityModalWindow.setCity(city);
+    }
+
+    // SelectCityModalWindow
+    public void checkIfModalWindowIsDisplayed(boolean expectedStatus){
+        SelectCityModalWindow selectCityModalWindow = new SelectCityModalWindow();
+        boolean actualStatus;
+        try{
+            actualStatus = selectCityModalWindow.windowIsDisplayed();
+        } catch(NoSuchElementException e){
+            actualStatus = false;
+        }
+        softAssert.assertEquals(actualStatus,expectedStatus,"проверка состояния модального окна");
     }
 }
