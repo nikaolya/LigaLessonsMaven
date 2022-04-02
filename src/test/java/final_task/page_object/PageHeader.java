@@ -4,6 +4,7 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import final_task.enums.ElementStatus;
+import final_task.enums.HeaderTab;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -19,7 +20,7 @@ public class PageHeader {
     private final String XPATH_NESTED_LOCATION_TAB = "//div[contains(@class, 'location')]";
     private final String XPATH_NESTED_CURRENT_CITY = "//span[contains(@class, 'location-text')]";
 
-    private Map<String, SelenideElement> navigationTabs= new HashMap<>();
+    private Map<HeaderTab, SelenideElement> navigationTabs= new HashMap<>();
 
     private SelenideElement orderStatusTab;
     private SelenideElement profileTab;
@@ -39,11 +40,11 @@ public class PageHeader {
         favoritesTab = Selenide.$x(XPATH_NAVIGATION_TABS + "/div[contains(@class, 'tab-personal')]/mvid-header-icon");
         cartTab = Selenide.$x(XPATH_NAVIGATION_TABS + "/div[contains(@class, 'tab-cart')]/mvid-header-icon");
 
-        navigationTabs.put("Статус заказа", orderStatusTab);
-        navigationTabs.put("Войти", profileTab);
-        navigationTabs.put("Сравнение", compareTab);
-        navigationTabs.put("Избранное", favoritesTab);
-        navigationTabs.put("Корзина", cartTab);
+        navigationTabs.put(HeaderTab.TAB_STATUS, orderStatusTab);
+        navigationTabs.put(HeaderTab.TAB_LOGIN, profileTab);
+        navigationTabs.put(HeaderTab.TAB_COMPARE, compareTab);
+        navigationTabs.put(HeaderTab.TAB_FAV, favoritesTab);
+        navigationTabs.put(HeaderTab.TAB_CART, cartTab);
 
         inputTextField = Selenide.$x(XPATH_INPUT_CONTAINER+XPATH_NESTED_INPUT_FIELD+ "/input");
         searchButton = Selenide.$x(XPATH_INPUT_CONTAINER+XPATH_NESTED_INPUT_FIELD+"//div[contains(@class, 'search-icon-wrap')]/mvid-icon");
@@ -70,9 +71,9 @@ public class PageHeader {
         return numberOfProducts;
     }
 
-    public ElementStatus getTabStatus(String tabTitle){
+    public ElementStatus getTabStatus(HeaderTab tabTitle){
         SelenideElement tab = navigationTabs.get(tabTitle);
-        tab.should(Condition.exist);
+        tab.shouldBe(Condition.visible);
         if (tab.has(Condition.attribute("class"))){
             if (getClassAttribute(tab).equals("disabled")){
                 return ElementStatus.DISABLED;
@@ -134,9 +135,9 @@ public class PageHeader {
 
     public String checkCurrentCity(String expectedCity){
         currentCity.shouldHave(Condition.text(expectedCity),Duration.ofSeconds(30));
-        //currentCity.shouldBe(Condition.visible, Duration.ofSeconds(30));
         return currentCity.getText();
     }
+
 
 }
 

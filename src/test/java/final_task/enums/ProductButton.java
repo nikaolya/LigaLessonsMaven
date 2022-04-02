@@ -1,6 +1,6 @@
 package final_task.enums;
 
-public enum Button {
+public enum ProductButton {
     ADD_TO_CART,
     WISHLIST,
     COMPARE

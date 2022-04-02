@@ -3,7 +3,7 @@ package final_task.page_object;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
-import final_task.enums.Button;
+import final_task.enums.ProductButton;
 
 public class ListingPage {
 
@@ -176,7 +176,7 @@ public class ListingPage {
         return false;
     }
 
-    public void pressButton(Button buttonToPress, int indexRow, int indexInLine){
+    public void pressButton(ProductButton buttonToPress, int indexRow, int indexInLine){
         String xpath;
         switch(buttonToPress){
             case ADD_TO_CART:
@@ -203,10 +203,14 @@ public class ListingPage {
     }
 
     public void setSortingType(String expectedSortingState){
+        sortDropdown.scrollIntoView(false);
+        sortDropdown.shouldBe(Condition.visible);
         sortDropdown.click();
         SelenideElement sortStateToSet = Selenide.$x(XPATH_SORT+XPATH_NESTED_SORT_OPTIONS+ String.format("/div[text() = ' %s ']", expectedSortingState));
         sortStateToSet.should(Condition.exist);
         sortStateToSet.click();
     }
+
+
 
 }

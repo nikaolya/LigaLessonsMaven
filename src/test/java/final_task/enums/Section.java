@@ -1,7 +1,7 @@
 package final_task.enums;
 
 public enum Section {
-    MOSTLYSEEN,
-    DAYPRODUCT,
-    LISTINGPAGE
+    MOSTLY_SEEN,
+    DAY_PRODUCT,
+    LISTING_PAGE
 }

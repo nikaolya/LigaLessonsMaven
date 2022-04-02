@@ -19,10 +19,10 @@ public class Steps {
     }
 
     // PageHeader
-    public void checkIfTabHasCorrectStatus(String tabTitle, ElementStatus expectedStatus){
+    public void checkIfTabHasCorrectStatus(HeaderTab tabTitle, ElementStatus expectedStatus){
         PageHeader pageHeader = startPage.getPageHeader();
         ElementStatus actualStatus = pageHeader.getTabStatus(tabTitle);
-        softAssert.assertEquals(actualStatus, expectedStatus, String.format("проверка статуса кнопки: %s",tabTitle));
+        softAssert.assertEquals(actualStatus, expectedStatus, String.format("проверка статуса кнопки: %s",tabTitle.toString()));
     }
 
     // PageHeader
@@ -76,7 +76,7 @@ public class Steps {
 
     // ProductOfTheDay
     public String saveProductParameter(Section section, Parameter parameter){
-        if (section.equals(Section.DAYPRODUCT)){
+        if (section.equals(Section.DAY_PRODUCT)){
             ProductOfTheDay productOfTheDay = startPage.getProductOfTheDay();
             switch(parameter){
                 case TITLE:
@@ -130,7 +130,7 @@ public class Steps {
 
     // StartPage
     public String saveProductParameter(Section section, Parameter parameter, int indexNumber){
-        if (section.equals(Section.MOSTLYSEEN)) {
+        if (section.equals(Section.MOSTLY_SEEN)) {
             switch (parameter) {
                 case TITLE:
                     return startPage.saveProductTitle(indexNumber);
@@ -190,7 +190,7 @@ public class Steps {
 
     // ListingPage
     public String saveProductParameter(Section section, Parameter parameter, int indexRow, int indexInLine){
-        if (section.equals(Section.LISTINGPAGE)){
+        if (section.equals(Section.LISTING_PAGE)){
             ListingPage listingPage = new ListingPage();
             switch(parameter){
                 case TITLE:
@@ -206,7 +206,7 @@ public class Steps {
     public void checkProductsTitlesOnPage(String expectedTitle, String expectedSorting){
         listingPage = new ListingPage();
         startPage.setPageViewStyle(ViewStyle.GRID);
-        softAssert.assertTrue(listingPage.lookOverProducts(expectedTitle, expectedSorting), String.format("проверяем, что все товары на странице содержат в названии: %s", expectedTitle));
+        softAssert.assertTrue(listingPage.lookOverProducts(expectedTitle, expectedSorting), String.format("проверяем, что все товары на странице содержат в названии: %s и сортировка: %s" , expectedTitle, expectedSorting));
     }
 
     // ListingPage
@@ -223,7 +223,7 @@ public class Steps {
     }
 
     // ListingPage
-    public void pressButton(Button buttonToPress, int indexRow, int indexInLine){
+    public void pressButton(ProductButton buttonToPress, int indexRow, int indexInLine){
         listingPage = new ListingPage();
         listingPage.pressButton(buttonToPress, indexRow, indexInLine);
     }
