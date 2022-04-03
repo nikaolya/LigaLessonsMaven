@@ -141,6 +141,7 @@ public class Tests {
     public void test_8(){
         Selenide.open("https://www.mvideo.ru");
         Steps steps = new Steps();
+
         steps.checkThatInputFieldIdDisplayed();
         steps.searchText("apple", "/product-list-page");
 
@@ -161,6 +162,7 @@ public class Tests {
     public void test_9(){
         Selenide.open("https://www.mvideo.ru");
         Steps steps = new Steps();
+
         steps.checkThatInputFieldIdDisplayed();
         steps.searchText("apple", "/product-list-page");
 
@@ -181,6 +183,7 @@ public class Tests {
     public void test_10(){
         Selenide.open("https://www.mvideo.ru");
         Steps steps = new Steps();
+
         steps.pressLocationTab();
         steps.checkIfModalWindowIsDisplayed(true);
         steps.checkSelectCityModalWindowTitle("Выберите город");

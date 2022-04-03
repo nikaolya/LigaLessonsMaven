@@ -73,7 +73,8 @@ public class PageHeader {
 
     public ElementStatus getTabStatus(HeaderTab tabTitle){
         SelenideElement tab = navigationTabs.get(tabTitle);
-        tab.shouldBe(Condition.visible);
+        tab.should(Condition.exist);
+        Selenide.sleep(200);
         if (tab.has(Condition.attribute("class"))){
             if (getClassAttribute(tab).equals("disabled")){
                 return ElementStatus.DISABLED;

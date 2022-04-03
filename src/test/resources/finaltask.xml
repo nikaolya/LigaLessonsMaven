@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
-<suite name="Running all cases">
-    <test name="tests">
+<suite name="Test Suite">
+    <test name="Test cases">
         <classes>
             <class name="final_task.Tests"/>
         </classes>
